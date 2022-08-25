@@ -1,8 +1,10 @@
 import React from 'react';
-import { FlatList, StyleSheet, Image } from 'react-native';
+import { FlatList, StyleSheet, Image, Pressable } from 'react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 
 import { Text, View } from '../components/Themed';
 import { Animal } from '../models/animal';
+import { RootStackParamList } from '../types';
 
 const DATA: Animal[] = [
   {
@@ -25,18 +27,34 @@ const DATA: Animal[] = [
   },
 ];
 
-const Item = ({ animal }: { animal: Animal }) => (
-  <View style={styles.item}>
-      <Image
-        style={styles.image}
-        source={require('../assets/images/shiba.jpg')}
-      />
-      <View style= {styles.textColumn}>
-        <Text style={styles.title}>{animal.name}</Text>
-        <Text style={styles.subtitle}>{animal.type} - {animal.gender}</Text>
+const animalClicked = (_: Animal, navigation: NavigationProp<RootStackParamList>) => {
+  navigation.navigate('Modal');
+};
+
+type ItemProps = { animal: Animal } & JSX.IntrinsicAttributes;
+
+const Item = ({ animal }: ItemProps) => {
+
+  const navigation = useNavigation();
+
+  return (
+    <Pressable onPress={() => animalClicked(animal, navigation)}
+      style={({ pressed }) => ({
+        opacity: pressed ? 0.5 : 1,
+      })}>
+      <View style={styles.item}>
+        <Image
+          style={styles.image}
+          source={require('../assets/images/shiba.jpg')}
+        />
+        <View style={styles.textColumn}>
+          <Text style={styles.title}>{animal.name}</Text>
+          <Text style={styles.subtitle}>{animal.type} - {animal.gender}</Text>
+        </View>
       </View>
-  </View>
-);
+    </Pressable>
+  );
+};
 
 const MyAnimalsScreen = () => {
   const renderItem = ({ item }: { item: Animal }) => (
