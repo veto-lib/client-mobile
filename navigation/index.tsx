@@ -12,12 +12,12 @@ import { ColorSchemeName } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import MyAnimalsScreen from '../screens/MyAnimalsScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+import MedicalRecordScreen from '../screens/MedicalRecordScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -41,7 +41,7 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen name="AnimalRecord" component={MedicalRecordScreen}  options={{ title: 'Dossier médical' }} />
       </Stack.Group>
     </Stack.Navigator>
   );

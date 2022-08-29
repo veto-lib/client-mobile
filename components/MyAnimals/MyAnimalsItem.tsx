@@ -7,7 +7,7 @@ import { Animal } from '../../models/animal';
 import { RootStackParamList } from '../../types';
 
 const animalClicked = (_: Animal, navigation: NavigationProp<RootStackParamList>) => {
-  navigation.navigate('Modal');
+  navigation.navigate('AnimalRecord');
 };
 
 type ItemProps = { animal: Animal } & JSX.IntrinsicAttributes;
