@@ -1,6 +1,7 @@
 import { StyleSheet, Image, Pressable } from 'react-native';
 import { Card, Paragraph, List } from 'react-native-paper';
 import * as FileSystem from 'expo-file-system';
+import * as IntentLauncher from 'expo-intent-launcher';
 
 import { View } from '../components/Themed';
 
@@ -40,8 +41,15 @@ export default function MedicalRecordScreen() {
           description="14 août 2022 22:51"
           left={() => <List.Icon icon="file-document" />}
           right={() => <Pressable onPress={async () => {
-            return FileSystem
+            const { uri } = await FileSystem
               .downloadAsync('http://www.africau.edu/images/default/sample.pdf', FileSystem.documentDirectory + 'sample.pdf');
+            FileSystem.getContentUriAsync(uri).then(uri => {
+              IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+                data: uri,
+                flags: 1,
+                type: 'application/pdf'
+              });
+            });
           }}>
             <List.Icon icon="arrow-collapse-down" />
           </Pressable>}
