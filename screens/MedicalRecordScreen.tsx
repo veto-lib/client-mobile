@@ -5,7 +5,7 @@ import * as IntentLauncher from 'expo-intent-launcher';
 
 import { View } from '../components/Themed';
 
-export default function MedicalRecordScreen() {
+const MedicalRecordScreen = () => {
   return (
     <View style={styles.container}>
       <Card style={styles.card}>
@@ -57,7 +57,7 @@ export default function MedicalRecordScreen() {
       </List.Section>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -75,3 +75,5 @@ const styles = StyleSheet.create({
     borderRadius: 100
   },
 });
+
+export default MedicalRecordScreen;

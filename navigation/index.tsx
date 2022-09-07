@@ -14,12 +14,12 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import MyAnimalsScreen from '../screens/MyAnimalsScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import MeetingScreen from '../screens/MeetingScreen';
 import { RootStackParamList, RootTabParamList } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import MedicalRecordScreen from '../screens/MedicalRecordScreen';
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+const Navigation = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
@@ -27,7 +27,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       <RootNavigator />
     </NavigationContainer>
   );
-}
+};
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -35,7 +35,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+const RootNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
@@ -45,7 +45,7 @@ function RootNavigator() {
       </Stack.Group>
     </Stack.Navigator>
   );
-}
+};
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -53,17 +53,17 @@ function RootNavigator() {
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
-function BottomTabNavigator() {
+const BottomTabNavigator = () => {
   const colorScheme = useColorScheme();
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="MyAnimals"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="MyAnimals"
         component={MyAnimalsScreen}
         options={() => ({
           title: 'Mes Animaux',
@@ -71,13 +71,15 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="Meeting"
+        component={MeetingScreen}
         options={{
-          title: 'Tab Two',
+          title: 'Mes Rendez-vous',
           tabBarIcon: ({ color }) => <FontAwesome5 size={25} style={{ marginBottom: -3 }} color={color} name="calendar" />,
         }}
       />
     </BottomTab.Navigator>
   );
-}
+};
+
+export default Navigation;
