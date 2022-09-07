@@ -1,12 +1,21 @@
+import { useState } from 'react';
 import { StyleSheet } from 'react-native';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
 import { Text, View } from '../components/Themed';
 
 const MeetingScreen = () => {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Mes Rendez-vous</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <RNDateTimePicker
+        onChange={(_, date) => setSelectedDate(date ?? new Date())}
+        value={selectedDate}
+        style={styles.datepicker}
+      />
+      <Text>{moment(selectedDate).locale('fr').format('LLLL')}</Text>
     </View>
   );
 };
@@ -26,6 +35,10 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  datepicker: {
+    height: 150,
+    width: 300
+  }
 });
 
 export default MeetingScreen;
