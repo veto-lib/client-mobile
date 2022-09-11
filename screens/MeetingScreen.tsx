@@ -1,15 +1,21 @@
 import { useState } from 'react';
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { DateTimePickerAndroid, DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { List, Card, Avatar, Button as PButton } from 'react-native-paper';
+import { List, Card, Button } from 'react-native-paper';
+import SelectList from 'react-native-dropdown-select-list';
 import moment from 'moment';
 
 import { Text, View } from '../components/Themed';
 
-const LeftContent = (props: any) => <Avatar.Icon {...props} icon="folder" />
-
 const MeetingScreen = () => {
   const [date, setDate] = useState(new Date());
+  const [selected, setSelected] = useState('');
+
+  const data = [
+    { key: '1', value: 'Jammu & Kashmir' },
+    { key: '1', value: 'Jammu & Kashmir' },
+    { key: '1', value: 'Jammu & Kashmir' }
+  ];
 
   const onChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate;
@@ -27,7 +33,6 @@ const MeetingScreen = () => {
 
   const showDatepicker = () => {
     showMode('date');
-    showMode('time');
   };
 
   const showTimepicker = () => {
@@ -36,6 +41,24 @@ const MeetingScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Card style={styles.card}>
+        <Card.Title title="Demander un rendez-vous" subtitle="Sélectionner une date et un vétérinaire" />
+        <Card.Content>
+          <SelectList
+            setSelected={setSelected}
+            data={data} onSelect={() => console.log(selected)}
+            placeholder="Choisir un vétérinaire"
+            search={false}
+          />
+          <Text style={styles.text}>Le {moment(date).locale('fr').format('LL')} à {moment(date).locale('fr').format('LT')}</Text>
+        </Card.Content>
+        <Card.Actions>
+          <Button onPress={showDatepicker}>Changer date</Button>
+          <Button onPress={showTimepicker}>Changer heure</Button>
+          <Button>Créer</Button>
+        </Card.Actions>
+      </Card>
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <List.Section>
         <List.Subheader>Mes prochains rendez-vous</List.Subheader>
         <List.Item
@@ -49,20 +72,6 @@ const MeetingScreen = () => {
           left={() => <List.Icon icon="calendar" />}
         />
       </List.Section>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <Text style={styles.title}>Demander un rendez-vous</Text>
-      <Button onPress={showDatepicker} title="Show date picker!" />
-      <Button onPress={showTimepicker} title="Show time picker!" />
-      <Text>{moment(date).locale('fr').format('LLLL')}</Text>
-      <Card style={styles.card}>
-        <Card.Title title="Demander un rendez-vous" subtitle="Sélectionner une date et un vétérinaire" left={LeftContent} />
-        <Card.Content>
-        </Card.Content>
-        <Card.Actions>
-          <PButton>Cancel</PButton>
-          <PButton>Ok</PButton>
-        </Card.Actions>
-      </Card>
     </View>
   );
 };
@@ -78,12 +87,13 @@ const styles = StyleSheet.create({
     height: 1,
     width: '100%',
   },
-  title: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
   card: {
     margin: 10
+  },
+  text: {
+    fontWeight: '500',
+    fontSize: 16,
+    margin: 5
   }
 });
 
