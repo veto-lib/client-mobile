@@ -15,7 +15,7 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  AnimalRecord: undefined;
+  AnimalRecord: { animalId: string };
   NotFound: undefined;
 };
 

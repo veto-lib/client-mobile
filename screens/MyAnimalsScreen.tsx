@@ -4,30 +4,13 @@ import { FlatList, StyleSheet } from 'react-native';
 import { View } from '../components/Themed';
 import MyAnimalsItem from '../components/MyAnimals/MyAnimalsItem';
 import { Animal } from '../models/animal';
-
-const DATA: Animal[] = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    name: 'Pépito',
-    gender: 'Mâle',
-    type: 'Chien'
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    name: 'Loubna',
-    gender: 'Femelle',
-    type: 'Chat'
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    name: 'Nina',
-    gender: 'Femelle',
-    type: 'Chien'
-  },
-];
-
+import useAsyncEffect from '../hooks/useAsyncEffect';
+import { getAnimals } from '../services/http-service';
 
 const MyAnimalsScreen = () => {
+
+  const { data } = useAsyncEffect(getAnimals);
+
   const renderItem = ({ item }: { item: Animal }) => (
     <MyAnimalsItem animal={item} />
   );
@@ -35,7 +18,7 @@ const MyAnimalsScreen = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={DATA}
+        data={data ?? []}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />

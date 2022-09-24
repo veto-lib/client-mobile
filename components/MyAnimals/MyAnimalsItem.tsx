@@ -6,15 +6,15 @@ import { Text, View } from '../Themed';
 import { Animal } from '../../models/animal';
 import { RootStackParamList } from '../../types';
 
-const animalClicked = (_: Animal, navigation: NavigationProp<RootStackParamList>) => {
-  navigation.navigate('AnimalRecord');
+const animalClicked = (animal: Animal, navigation: NavigationProp<RootStackParamList>) => {
+  navigation.navigate('AnimalRecord', { animalId: animal.id });
 };
 
 type ItemProps = { animal: Animal } & JSX.IntrinsicAttributes;
 
 const MyAnimalsItem = ({ animal }: ItemProps) => {
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   return (
     <Pressable onPress={() => animalClicked(animal, navigation)}
