@@ -3,6 +3,39 @@ import axios from 'axios';
 import { Animal } from '../models/animal';
 import { Event, CreateEvent } from '../models/event';
 import { Document } from '../models/document';
+import { Veterinary } from '../models/veterinary';
+
+const getVeterinaries = async (): Promise<Veterinary[]> => {
+  return [
+    {
+      email: 'toto.titi',
+      firstName: 'toto',
+      lastName: 'titi',
+      birthDate: new Date(),
+      gender: 'M',
+      compatibleAnimals: [ 'Chien' ],
+      enabled: true
+    },
+    {
+      email: 'toto.tata',
+      firstName: 'toto',
+      lastName: 'tata',
+      birthDate: new Date(),
+      gender: 'M',
+      compatibleAnimals: [ 'Chien' ],
+      enabled: true
+    },
+    {
+      email: 'titi.titi',
+      firstName: 'titi',
+      lastName: 'titi',
+      birthDate: new Date(),
+      gender: 'M',
+      compatibleAnimals: [ 'Chien' ],
+      enabled: true
+    }
+  ];
+};
 
 const getAnimals = async (): Promise<Animal[]> => {
   return [
@@ -101,5 +134,6 @@ export {
   getAnimalEvents,
   getAnimalDocuments,
   getNextEvents,
-  createEvent
+  createEvent,
+  getVeterinaries
 };

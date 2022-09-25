@@ -6,16 +6,27 @@ import SelectList from 'react-native-dropdown-select-list';
 import moment from 'moment';
 
 import { Text, View } from '../components/Themed';
+import useAsyncEffect from '../hooks/useAsyncEffect';
+import { getNextEvents, getVeterinaries, createEvent, getAnimals } from '../services/http-service';
+import { Event } from '../models/event';
 
 const MeetingScreen = () => {
-  const [date, setDate] = useState(new Date());
-  const [selected, setSelected] = useState('');
 
-  const data = [
-    { key: '1', value: 'Jammu & Kashmir' },
-    { key: '1', value: 'Jammu & Kashmir' },
-    { key: '1', value: 'Jammu & Kashmir' }
+  const [date, setDate] = useState(new Date());
+  const [veterinary, setVeterinary] = useState('');
+  const [reason, setReason] = useState<Event['reason']>('Vaccination');
+  const [animal, setAnimal] = useState<string>('');
+
+  const reasons: Event['reason'][] = [
+    'Vaccination',
+    'Consultation',
+    'Identification',
+    'Visite de contrôle'
   ];
+
+  const { data: veterinaries } = useAsyncEffect(getVeterinaries);
+  const { data: meetings } = useAsyncEffect(getNextEvents);
+  const { data: animals } = useAsyncEffect(getAnimals);
 
   const onChange = (_: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate;
@@ -44,33 +55,57 @@ const MeetingScreen = () => {
       <Card style={styles.card}>
         <Card.Title title="Demander un rendez-vous" subtitle="Sélectionner une date et un vétérinaire" />
         <Card.Content>
+          <View style={styles.select}>
           <SelectList
-            setSelected={setSelected}
-            data={data} onSelect={() => console.log(selected)}
-            placeholder="Choisir un vétérinaire"
-            search={false}
-          />
+              setSelected={setVeterinary}
+              data={veterinaries?.map((v, i) => ({ value: v.email })) ?? []}
+              placeholder="Choisir un vétérinaire"
+              search={false}
+            />
+          </View>
+          <View style={styles.select}>
+            <SelectList
+              setSelected={setReason}
+              data={reasons?.map((r, i) => ({ value: r })) ?? []}
+              placeholder="Choisir un motif"
+              search={false}
+            />
+          </View>
+          <View style={styles.select}>
+            <SelectList
+              setSelected={setAnimal}
+              data={animals?.map((a, i) => ({ value: a.name }))}
+              placeholder="Choisir un animal"
+              search={false}
+            />
+          </View>
           <Text style={styles.text}>Le {moment(date).locale('fr').format('LL')} à {moment(date).locale('fr').format('LT')}</Text>
         </Card.Content>
         <Card.Actions>
           <Button onPress={showDatepicker}>Changer date</Button>
           <Button onPress={showTimepicker}>Changer heure</Button>
-          <Button>Créer</Button>
+          <Button onPress={() => createEvent({
+            title: moment(date).locale('fr').format('LL'),
+            start: date,
+            end: moment(date).add(1, 'h').toDate(),
+            notes: '',
+            reason: reason,
+            animal: animals?.find(a => a.name === animal)?.id ?? '',
+            customer: '1',
+            veterinary: veterinary
+          })}>Créer</Button>
         </Card.Actions>
       </Card>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <List.Section>
         <List.Subheader>Mes prochains rendez-vous</List.Subheader>
-        <List.Item
-          title="Vaccin contre xxx - Vaccination"
-          description="Quentin Caritey - 14 août 2022 18:58"
-          left={() => <List.Icon icon="calendar" />}
-        />
-        <List.Item
-          title="Mensuel - Consultation"
-          description="Quentin Caritey - 15 août 2022 14:22"
-          left={() => <List.Icon icon="calendar" />}
-        />
+        {
+          (meetings ?? []).map(m => <List.Item
+            title={m.title + ' - ' + m.reason}
+            description={m.veterinary + ' - ' + moment(m.start).locale('fr').format('LL')}
+            left={() => <List.Icon icon="calendar" />}
+          />)
+        }
       </List.Section>
     </View>
   );
@@ -81,6 +116,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: '100%',
     minHeight: '100%'
+  },
+  select: {
+    margin: 10,
   },
   separator: {
     marginVertical: 30,

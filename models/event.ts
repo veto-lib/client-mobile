@@ -4,7 +4,7 @@ export interface Event {
   start: Date;  
   end: Date;
   notes: string;
-  reason: string;
+  reason: 'Vaccination' | 'Consultation' | 'Identification' | 'Visite de contrôle';
   customer: string;  
   animal: string;  
   veterinary: string;
