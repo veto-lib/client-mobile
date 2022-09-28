@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
 import { View } from '../components/Themed';
 import MyAnimalsItem from '../components/MyAnimals/MyAnimalsItem';
 import { Animal } from '../models/animal';
-import useAsyncEffect from '../hooks/useAsyncEffect';
 import { getAnimals } from '../services/http-service';
 
 const MyAnimalsScreen = () => {
 
-  const { data } = useAsyncEffect(getAnimals);
+  const [ animals, setAnimals ] = useState<Animal[]>([]);
+  useEffect(() => {
+    getAnimals().then(res => setAnimals(res));
+  }, []);
 
   const renderItem = ({ item }: { item: Animal }) => (
     <MyAnimalsItem animal={item} />
@@ -18,7 +20,7 @@ const MyAnimalsScreen = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={data ?? []}
+        data={animals}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />

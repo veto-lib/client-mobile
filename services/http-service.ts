@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { getToken } from './auth-service';
 import { Animal } from '../models/animal';
 import { Event, CreateEvent } from '../models/event';
 import { Document } from '../models/document';
@@ -38,6 +39,8 @@ const getVeterinaries = async (): Promise<Veterinary[]> => {
 };
 
 const getAnimals = async (): Promise<Animal[]> => {
+  const token = getToken();
+
   return [
     {
       id: '12',
