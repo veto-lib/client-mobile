@@ -9,7 +9,7 @@ import { Veterinary } from '../models/veterinary';
 const getVeterinaries = async (): Promise<Veterinary[]> => {
   return [
     {
-      email: 'toto.titi',
+      email: 'quentin.caritey@outlook.fr',
       firstName: 'toto',
       lastName: 'titi',
       birthDate: new Date(),
@@ -18,18 +18,9 @@ const getVeterinaries = async (): Promise<Veterinary[]> => {
       enabled: true
     },
     {
-      email: 'toto.tata',
+      email: 'xy@example.com',
       firstName: 'toto',
       lastName: 'tata',
-      birthDate: new Date(),
-      gender: 'M',
-      compatibleAnimals: [ 'Chien' ],
-      enabled: true
-    },
-    {
-      email: 'titi.titi',
-      firstName: 'titi',
-      lastName: 'titi',
       birthDate: new Date(),
       gender: 'M',
       compatibleAnimals: [ 'Chien' ],
@@ -41,90 +32,66 @@ const getVeterinaries = async (): Promise<Veterinary[]> => {
 const getAnimals = async (): Promise<Animal[]> => {
   const token = getToken();
 
-  return [
-    {
-      id: '12',
-      gender: 'M',
-      name: 'Pépito',
-      type: 'Chien'
+  return axios.get('https://veto-lib-back.herokuapp.com/api/customers/quentin.caritey@outlook.fr/animals', {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-    {
-      id: '11',
-      gender: 'F',
-      name: 'Loubna',
-      type: 'Chien'
-    },
-    {
-      id: '13',
-      gender: 'F',
-      name: 'Nina',
-      type: 'Chien'
-    }
-  ];
+  })
+  .then(data => { 
+    return data.data;
+  });
 };
 
 const getAnimal = async (id: string): Promise<Animal> => {
-  return {
-    id,
-    gender: 'M',
-    name: 'Pépito',
-    type: 'Chien'
-  };
+  const token = getToken();
+
+  return axios.get(`https://veto-lib-back.herokuapp.com/api/customers/quentin.caritey@outlook.fr/animals/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then(data => { 
+    return data.data;
+  });
 };
 
 const getAnimalEvents = async (animalId: string): Promise<Event[]> => {
-  return [
-    {
-      id: '2',
-      title: 'event',
-      start: new Date(),
-      end: new Date(),
-      notes: 'notes',
-      reason: 'Vaccination',
-      customer: '2',
-      animal: '12',
-      veterinary: '1',
-      callId: 'abcd',
-    }
-  ];
+  const token = getToken();
+
+  return axios.get(`https://veto-lib-back.herokuapp.com/api/customers/quentin.caritey@outlook.fr/animals/${animalId}/events`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then(data => { 
+    return data.data;
+  });
 };
 
 const getAnimalDocuments = async (animalId: string): Promise<Document[]> => {
-  return [
-    {
-      id: '1',
-      name: 'some-pdf',
-      uploaded: new Date(),
-      data: '',
-      animal: '12',
-      customer: '2',
+  const token = getToken();
+
+  return axios.get(`https://veto-lib-back.herokuapp.com/api/customers/quentin.caritey@outlook.fr/animals/${animalId}/documents`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-    {
-      id: '2',
-      name: 'some-pdf-2',
-      uploaded: new Date(),
-      data: '',
-      animal: '12',
-      customer: '2',
-    }
-  ];
+  })
+  .then(data => { 
+    return data.data;
+  });
 };
 
 const getNextEvents = async (): Promise<Event[]> => {
-  return [
-    {
-      id: '2',
-      title: 'event',
-      start: new Date(),
-      end: new Date(),
-      notes: 'notes',
-      reason: 'Vaccination',
-      customer: '2',
-      animal: '12',
-      veterinary: '1',
-      callId: 'abcd',
-    }
-  ];
+  const token = getToken();
+
+  return axios.get(`https://veto-lib-back.herokuapp.com/api/customers/quentin.caritey@outlook.fr/events`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  .then(data => { 
+    return data.data;
+  });
 };
 
 const createEvent = async (event: CreateEvent): Promise<void> => {
@@ -138,5 +105,5 @@ export {
   getAnimalDocuments,
   getNextEvents,
   createEvent,
-  getVeterinaries
+  getVeterinaries,
 };

@@ -1,3 +1,6 @@
+import { Animal } from './animal';
+import { Veterinary } from './veterinary';
+
 export interface Event {
   id: string;
   title: string;
@@ -6,8 +9,8 @@ export interface Event {
   notes: string;
   reason: 'Vaccination' | 'Consultation' | 'Identification' | 'Visite de contrôle';
   customer: string;  
-  animal: string;  
-  veterinary: string;
+  animal: Animal;  
+  veterinary: Veterinary;
   callId: string;
 }
 

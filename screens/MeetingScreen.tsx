@@ -100,9 +100,10 @@ const MeetingScreen = () => {
       <List.Section>
         <List.Subheader>Mes prochains rendez-vous</List.Subheader>
         {
-          (meetings ?? []).map(m => <List.Item
+          (meetings ?? []).map((m, i) => <List.Item
+            key={i}
             title={m.title + ' - ' + m.reason}
-            description={m.veterinary + ' - ' + moment(m.start).locale('fr').format('LL')}
+            description={`${m.veterinary.firstName} ${m.veterinary.lastName} -  ${moment(m.start).locale('fr').format('LL')}`}
             left={() => <List.Icon icon="calendar" />}
           />)
         }

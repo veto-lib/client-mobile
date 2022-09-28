@@ -35,9 +35,10 @@ const MedicalRecordScreen = ({ route }: Props) => {
       <List.Section>
         <List.Subheader>Derniers rendez-vous</List.Subheader>
         {
-          (meetings ?? []).map(m => <List.Item
+          (meetings ?? []).map((m, i) => <List.Item
+            key={i}
             title={m.title + ' - ' + m.reason}
-            description={m.veterinary + ' - ' + moment(m.start).locale('fr').format('LL')}
+            description={`${m.veterinary.firstName} ${m.veterinary.lastName} -  ${moment(m.start).locale('fr').format('LL')}`}
             left={() => <List.Icon icon="calendar" />}
           />)
         }
@@ -45,7 +46,8 @@ const MedicalRecordScreen = ({ route }: Props) => {
       <List.Section>
         <List.Subheader>Documents</List.Subheader>
         {
-          (documents ?? []).map(d => <List.Item
+          (documents ?? []).map((d, i) => <List.Item
+            key={i}
             title={d.name}
             description={moment(d.uploaded).locale('fr').format('LL')}
             left={() => <List.Icon icon="file-document" />}
